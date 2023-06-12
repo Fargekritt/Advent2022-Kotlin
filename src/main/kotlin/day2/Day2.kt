@@ -27,6 +27,7 @@ fun main() {
 
 
     println(partA(readFile()))
+    println(partB(readFile()))
 }
 
 fun round(opponent: Hand, player: Hand): Int {
@@ -44,11 +45,8 @@ fun round(opponent: Hand, player: Hand): Int {
 
 fun readFile(): List<List<String>> {
 
-    val text: List<List<String>> = File("day2/Input")
-        .bufferedReader()
-        .use { it.readText() }
-        .split("\r\n")
-        .map { it.split(" ") }
+    val text: List<List<String>> =
+        File("day2/Input").bufferedReader().use { it.readText() }.split("\r\n").map { it.split(" ") }
 
     return text
 }
@@ -57,35 +55,35 @@ fun partA(text: List<List<String>>): Int {
     var score: Int = 0
 
     for (game in text) {
-        val test: Hand = Hand.fromInt(game[0][0] - 'A' + 1 )
-        val test2: Hand = Hand.fromInt(game[1][0] - 'X' + 1)
-        score += round(test, test2)
+        val opponent: Hand = Hand.fromInt(game[0][0] - 'A' + 1)
+        val player: Hand = Hand.fromInt(game[1][0] - 'X' + 1)
+        score += round(opponent, player)
     }
     return score
 }
 
-//fun partB(text: List<List<String>>): Int {
-//    var score: Int = 0
-//
-//    for (game in text){
-//        if(game[1][0] == 'Y'){
-//            score += round(game[0][0], game[0][0])
-//        } else if (game[1][0] == 'X'){
-//            val temp: Int = game[0][0] - 'A'
-//            var losing = temp - 2
-//            if (losing < 0) {
-//                losing = 2
-//            }
-//            score += round(game[0][0], game[0][0]+losing)
-//        } else if (game[1][0] == 'Z'){
-//            val temp: Int = game[0][0] - 'A'
-//            var winning = temp + 1
-//            if (winning > 2) {
-//                winning = 0
-//            }
-//            score += round(game[0][0], 'A'+winning)
-//        }
-//    }
-//
-//    return score
-//}
+fun partB(text: List<List<String>>): Int {
+    var score: Int = 0
+
+    //Y = Draw
+    //X = Lose
+    //Z = Win
+    for (game in text) {
+        val opponent: Hand = Hand.fromInt(game[0][0] - 'A' + 1)
+        var player: Hand = Hand.Rock
+        if (game[1][0] == 'Y') {
+            player = opponent
+        } else if (game[1][0] == 'X') {
+            var test = (game[0][0] - 'A' + 3) % 3
+            if (test == 0) test = 3
+            player = Hand.fromInt(test)
+        } else if (game[1][0] == 'Z') {
+            var test = (game[0][0] - 'A' + 2) % 3
+            if (test == 0) test = 3
+            player = Hand.fromInt(test)
+        }
+        score += round(opponent, player)
+    }
+
+    return score
+}
