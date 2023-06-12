@@ -26,12 +26,12 @@ fun main() {
 //    println(round('C', 'Y'))
 
 
-    println(partB(readFile()))
+    println(partA(readFile()))
 }
 
-fun round(opponent: Char, player: Char): Int {
-    val opponentInt = opponent - 'A' + 1
-    val playerInt = player - 'A' + 1
+fun round(opponent: Hand, player: Hand): Int {
+    val opponentInt = opponent.value
+    val playerInt = player.value
     if (playerInt == opponentInt) {
         return 3 + playerInt
     }
@@ -44,7 +44,7 @@ fun round(opponent: Char, player: Char): Int {
 
 fun readFile(): List<List<String>> {
 
-    val text: List<List<String>> = File("day2/Input")
+    val text: List<List<String>> = File("day2/test")
         .bufferedReader()
         .use { it.readText() }
         .split("\r\n")
@@ -57,33 +57,35 @@ fun partA(text: List<List<String>>): Int {
     var score: Int = 0
 
     for (game in text) {
-        score += round(game[0][0], game[1][0] - 23)
+        val test: Hand = Hand.fromInt(game[0][0] - 'A')
+        val test2: Hand = Hand.fromInt(game[1][0] - 'X')
+        score += round(test, test2)
     }
     return score
 }
 
-fun partB(text: List<List<String>>): Int {
-    var score: Int = 0
-
-    for (game in text){
-        if(game[1][0] == 'Y'){
-            score += round(game[0][0], game[0][0])
-        } else if (game[1][0] == 'X'){
-            val temp: Int = game[0][0] - 'A'
-            var losing = temp - 2
-            if (losing < 0) {
-                losing = 2
-            }
-            score += round(game[0][0], game[0][0]+losing)
-        } else if (game[1][0] == 'Z'){
-            val temp: Int = game[0][0] - 'A'
-            var winning = temp + 1
-            if (winning > 2) {
-                winning = 0
-            }
-            score += round(game[0][0], 'A'+winning)
-        }
-    }
-
-    return score
-}
+//fun partB(text: List<List<String>>): Int {
+//    var score: Int = 0
+//
+//    for (game in text){
+//        if(game[1][0] == 'Y'){
+//            score += round(game[0][0], game[0][0])
+//        } else if (game[1][0] == 'X'){
+//            val temp: Int = game[0][0] - 'A'
+//            var losing = temp - 2
+//            if (losing < 0) {
+//                losing = 2
+//            }
+//            score += round(game[0][0], game[0][0]+losing)
+//        } else if (game[1][0] == 'Z'){
+//            val temp: Int = game[0][0] - 'A'
+//            var winning = temp + 1
+//            if (winning > 2) {
+//                winning = 0
+//            }
+//            score += round(game[0][0], 'A'+winning)
+//        }
+//    }
+//
+//    return score
+//}
