@@ -4,15 +4,30 @@ import java.io.File
 
 fun main() {
     val text = readFile()
-    partA(text)
+    println(partA(text))
 
 }
 
 fun readFile(): String {
-    return File("day4/Test").bufferedReader().use { it.readText() }
+    return File("day4/Input").bufferedReader().use { it.readText() }
 }
 
-fun partA(text: String) {
-    val lines: List<String> = text.split("/r/n")
-    println(lines)
+fun partA(text: String): Int {
+    val pairs: List<List<List<Int>>> = text.split("\r\n")
+            .map { it.split(",") }
+            .map { pair -> pair.map { it.split("-") }
+                    .map { strings -> strings.map { it.toInt() } } }
+    var amount = 0
+
+    for (pair in pairs) {
+        if (fullyContains(pair)) {
+            amount++
+        }
+    }
+    return amount
+}
+
+fun fullyContains(pair: List<List<Int>>): Boolean{
+    return (pair[0][0] <= pair[1][0] && pair[0][1] >= pair[1][1]) || (pair[1][0] <= pair[0][0] && pair[1][1] >= pair[0][1])
+
 }
