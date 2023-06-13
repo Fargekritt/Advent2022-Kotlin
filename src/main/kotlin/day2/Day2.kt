@@ -45,14 +45,11 @@ fun round(opponent: Hand, player: Hand): Int {
 
 fun readFile(): List<List<String>> {
 
-    val text: List<List<String>> =
-        File("day2/Input").bufferedReader().use { it.readText() }.split("\r\n").map { it.split(" ") }
-
-    return text
+    return File("day2/Input").bufferedReader().use { it.readText() }.split("\r\n").map { it.split(" ") }
 }
 
 fun partA(text: List<List<String>>): Int {
-    var score: Int = 0
+    var score= 0
 
     for (game in text) {
         val opponent: Hand = Hand.fromInt(game[0][0] - 'A' + 1)
@@ -63,7 +60,7 @@ fun partA(text: List<List<String>>): Int {
 }
 
 fun partB(text: List<List<String>>): Int {
-    var score: Int = 0
+    var score = 0
 
     //Y = Draw
     //X = Lose
